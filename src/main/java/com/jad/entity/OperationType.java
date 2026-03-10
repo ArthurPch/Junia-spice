@@ -2,11 +2,13 @@ package com.jad.entity;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import java.time.LocalTime;
 
 @Getter
 @Setter
+@ToString
 public class OperationType {
     private Integer id;
     private String label;

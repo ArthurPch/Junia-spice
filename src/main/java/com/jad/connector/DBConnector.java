@@ -41,4 +41,11 @@ public class DBConnector {
                                                       "yagoulou");
         System.out.println("Connected to the database.");
     }
+
+    public void disconnect() throws SQLException {
+        if (this.connection != null) {
+            this.connection.close();
+            System.out.println("Disconnected from the database.");
+        }
+    }
 }

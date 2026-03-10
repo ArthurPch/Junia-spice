@@ -28,4 +28,18 @@ public class MachineToolService extends AbstractService {
         }
         return machineTools;
     }
+
+    public MachineTool getById(final int id) throws SQLException {
+        final Statement statement = this.getStatement();
+        ResultSet resultSet = statement.executeQuery("SELECT * FROM MachineTool WHERE id = " + id);
+        if (resultSet.next()) {
+            return new MachineTool(resultSet.getInt("id"),
+                                   resultSet.getString("label"),
+                                   resultSet.getTime("installationDuration").toLocalTime(),
+                                   resultSet.getTime("cleaningDuration").toLocalTime(),
+                                   resultSet.getInt("minQuantity"),
+                                   resultSet.getInt("maxQuantity"));
+        }
+        return null;
+    }
 }

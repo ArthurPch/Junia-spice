@@ -2,10 +2,12 @@ package com.jad.entity;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 @Getter
 @Setter
-public class ProductRecipe {
+@ToString
+public class ProductRecipe  extends AbstractEntity{
     public ProductRecipe(final Integer idProduct, final Integer idOperationType) {
         this.idProduct = idProduct;
         this.idOperationType = idOperationType;

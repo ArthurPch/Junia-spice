@@ -9,7 +9,7 @@ import java.time.LocalTime;
 @Getter
 @Setter
 @ToString
-public class MachineTool {
+public class MachineTool extends AbstractEntity {
     private Integer id;
     private String label;
     private LocalTime installationDuration;

@@ -9,7 +9,7 @@ import java.time.LocalTime;
 @Getter
 @Setter
 @ToString
-public class OperationType {
+public class OperationType extends AbstractEntity {
     private Integer id;
     private String label;
     private Byte minNbComponents;

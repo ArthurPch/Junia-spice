@@ -2,6 +2,7 @@ package com.jad.service;
 
 import com.jad.connector.DBConnector;
 import com.jad.entity.MachineTool;
+import com.jad.entity.OperationType;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -41,5 +42,27 @@ public class MachineToolService extends AbstractService {
                                    resultSet.getInt("maxQuantity"));
         }
         return null;
+    }
+
+    public List<OperationType> getOperationTypesForMachineTool(final MachineTool machineTool) throws SQLException {
+        return this.getOperationTypesForMachineToolId(machineTool.getId());
+    }
+
+    public List<OperationType> getOperationTypesForMachineToolId(final int machineToolId) throws SQLException {
+        final Statement statement = this.getStatement();
+        List<OperationType> operationTypes = new ArrayList<>();
+        ResultSet resultSet = statement.executeQuery("SELECT OperationType.* FROM OperationType " +
+                                                             "JOIN MachineTool_OperationType ON OperationType.id = MachineTool_OperationType.operationTypeId " +
+                                                             "WHERE MachineTool_OperationType.machineToolId = " + machineToolId);
+        for (int i = 0; resultSet.next(); i++) {
+            operationTypes.add(new OperationType(resultSet.getInt("id"),
+                                                 resultSet.getString("label"),
+                                                 resultSet.getByte("minNbComponents"),
+                                                 resultSet.getByte("maxNbComponents"),
+                                                 resultSet.getTime("duration").toLocalTime(),
+                                                 resultSet.getInt("lossOfQuantity"),
+                                                 resultSet.getInt("id_ProductType")));
+        }
+        return operationTypes;
     }
 }

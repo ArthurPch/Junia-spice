@@ -7,7 +7,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class ProductType  extends AbstractEntity{
+public class ProductType extends AbstractEntity {
     private Integer id;
     private String label;
 

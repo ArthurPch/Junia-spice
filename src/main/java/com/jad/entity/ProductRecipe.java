@@ -7,12 +7,12 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class ProductRecipe  extends AbstractEntity{
+public class ProductRecipe extends AbstractEntity {
+    private Integer idProduct;
+    private Integer idOperationType;
+
     public ProductRecipe(final Integer idProduct, final Integer idOperationType) {
         this.idProduct = idProduct;
         this.idOperationType = idOperationType;
     }
-
-    private Integer idProduct;
-    private Integer idOperationType;
 }

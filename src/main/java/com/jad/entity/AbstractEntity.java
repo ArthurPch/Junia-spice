@@ -38,7 +38,7 @@ abstract class AbstractEntity {
             return LocalDate.parse(json.getAsString(), this.formatter);
         }
     }
-
+ 
     private static class LocalTimeTypeAdapter implements JsonSerializer<LocalTime>, JsonDeserializer<LocalTime> {
         private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
 

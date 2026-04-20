@@ -1,24 +1,37 @@
 package com.jad;
 
 import com.jad.connector.DBConnector;
-import com.jad.service.*;
+import com.jad.entity.Product;
+import com.jad.service.ProductService;
+
 import java.sql.SQLException;
+import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) throws SQLException {
-        DBConnector.getInstance().getConnection(); // Teste la connexion
+        ProductService productService = new ProductService(DBConnector.getInstance());
+        Scanner scanner = new Scanner(System.in);
 
-        MachineToolService machineToolService = new MachineToolService(DBConnector.getInstance());
-        machineToolService.getAll().forEach(System.out::println);
+        Product product = null;
+        int idProduct = 0;
 
-        System.out.println("\nTest opération");
-        OperationTypeService operationTypeService = new OperationTypeService(DBConnector.getInstance());
-        System.out.println(operationTypeService.getById(1).toPrettyJson());
+        while (product == null) {
+            System.out.print("Entrez l'ID du produit : ");
+            idProduct = scanner.nextInt();
 
-        System.out.println("\nTest recette");
-        ProductRecipeService productRecipeService = new ProductRecipeService(DBConnector.getInstance());
-        System.out.println(productRecipeService.getByIdProduct(200).toPrettyJson());
+            product = productService.getById(idProduct);
 
+            if (product == null) {
+                System.out.println("Produit introuvable.");
+            }
+        }
+
+        System.out.print("Entrez la quantité de " + product.getLabel() + " : ");
+        double quantity = scanner.nextDouble();
+
+        System.out.println("\nRésumé : " + quantity + " de " + product.getLabel() + " (ID: " + idProduct + ")");
+
+        scanner.close();
         DBConnector.getInstance().disconnect();
     }
 }

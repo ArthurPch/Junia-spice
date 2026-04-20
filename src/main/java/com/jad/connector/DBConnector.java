@@ -29,7 +29,7 @@ public class DBConnector {
     }
 
     public Connection getConnection() throws SQLException {
-        if (this.connection == null) {
+        if (this.connection == null || this.connection.isClosed()) {
             this.connect();
         }
         return this.connection;
@@ -37,13 +37,13 @@ public class DBConnector {
 
     public void connect() throws SQLException {
         this.connection = DriverManager.getConnection("jdbc:mariadb://jeanaymeric.hd.free.fr:8601/nfsproject",
-                                                      "junia_isen2_2526",
-                                                      "yagoulou");
+                "junia_isen2_2526",
+                "yagoulou");
         System.out.println("Connected to the database.");
     }
 
     public void disconnect() throws SQLException {
-        if (this.connection != null) {
+        if (this.connection != null && !this.connection.isClosed()) {
             this.connection.close();
             System.out.println("Disconnected from the database.");
         }

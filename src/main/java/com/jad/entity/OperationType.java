@@ -16,17 +16,17 @@ public class OperationType extends AbstractEntity {
     private Byte maxNbComponents;
     private LocalTime duration;
     private Integer lossOfQuantity;
-    private Integer idProducttype;
+    private Integer idProductType;
 
     public OperationType(final Integer id, final String label, final Byte minNbComponents, final Byte maxNbComponents,
                          final LocalTime duration,
-                         final Integer lossOfQuantity, final Integer idProducttype) {
+                         final Integer lossOfQuantity, final Integer idProductType) {
         this.id = id;
         this.label = label;
         this.minNbComponents = minNbComponents;
         this.maxNbComponents = maxNbComponents;
         this.duration = duration;
         this.lossOfQuantity = lossOfQuantity;
-        this.idProducttype = idProducttype;
+        this.idProductType = idProductType;
     }
 }

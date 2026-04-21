@@ -76,6 +76,16 @@ public class OrderGenerator {
         System.out.printf("[Opération] %s sur %s : %.4f -> %.4f (perte %d%%)%n",
                 operation.getLabel(), product.getLabel(), quantiteAvantOp, quantity, operation.getLossOfQuantity());
 
+        for (RecipeLine line : recipe.getRecipeLines()) {
+            Product component = productService.getById(line.getIdComponent());
+            if (component == null) {
+                System.err.println("[Erreur] Composant introuvable (id=" + line.getIdComponent() + "). Ligne ignorée.");
+                continue;
+            }
+
+            process(component, quantiteAvantOp * (line.getPercentage() / 100.0));
+        }
+
         List<MachineTool> candidates = operationTypeService.getMachineToolsForOperationTypeId(operation.getId());
         if (candidates.isEmpty()) {
             System.err.println("[Erreur] Aucune machine dispo pour l'opération : " + operation.getLabel() + ". Commande non planifiée.");
@@ -90,16 +100,6 @@ public class OrderGenerator {
             double quantiteArrondie = Math.round(quantiteAvantOp * 10000.0) / 10000.0;
             machineOrders.get(machineSelectionnee.getId())
                     .add(new OrderDTO(orderCounter++, product.getId(), quantiteArrondie));
-        }
-
-        for (RecipeLine line : recipe.getRecipeLines()) {
-            Product component = productService.getById(line.getIdComponent());
-            if (component == null) {
-                System.err.println("[Erreur] Composant introuvable (id=" + line.getIdComponent() + "). Ligne ignorée.");
-                continue;
-            }
-
-            process(component, quantiteAvantOp * (line.getPercentage() / 100.0));
         }
     }
 

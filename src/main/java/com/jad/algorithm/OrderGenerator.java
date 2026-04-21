@@ -78,9 +78,14 @@ public class OrderGenerator {
         if (candidates.isEmpty()) {
             System.err.println("[Erreur] Aucune machine dispo pour l'opération : " + operation.getLabel() + ". Commande non planifiée.");
         } else {
-            MachineTool machine = candidates.getFirst();
-            machineOrders
-                    .computeIfAbsent(machine.getId(), k -> new ArrayList<>())
+            MachineTool machineSelectionnee = choisirMeilleureMachine(candidates, operation);
+
+            System.out.printf("[Machine] %s sélectionné%n", machineSelectionnee.getLabel());
+
+            if (!machineOrders.containsKey(machineSelectionnee.getId())) {
+                machineOrders.put(machineSelectionnee.getId(), new ArrayList<>());
+            }
+            machineOrders.get(machineSelectionnee.getId())
                     .add(new OrderDTO(orderCounter++, product.getId(), quantiteAvantOp));
         }
 
@@ -93,5 +98,24 @@ public class OrderGenerator {
 
             process(component, quantiteAvantOp * (line.getPercentage() / 100.0));
         }
+    }
+
+    private MachineTool choisirMeilleureMachine(List<MachineTool> candidates, OperationType operation) {
+        MachineTool meilleureMachine = null;
+        long meilleurTemps = Long.MAX_VALUE;
+
+        for (MachineTool machine : candidates) {
+            long tempsInstallation = machine.getInstallationDuration().toSecondOfDay();
+            long tempsOperation    = operation.getDuration().toSecondOfDay();
+            long tempsNettoyage    = machine.getCleaningDuration().toSecondOfDay();
+            long tempsTotal        = tempsInstallation + tempsOperation + tempsNettoyage;
+
+            if (tempsTotal < meilleurTemps) {
+                meilleurTemps = tempsTotal;
+                meilleureMachine = machine;
+            }
+        }
+
+        return meilleureMachine;
     }
 }

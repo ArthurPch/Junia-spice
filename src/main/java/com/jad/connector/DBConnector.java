@@ -39,7 +39,6 @@ public class DBConnector {
         this.connection = DriverManager.getConnection("jdbc:mariadb://jeanaymeric.hd.free.fr:8601/nfsproject",
                 "junia_isen2_2526",
                 "yagoulou");
-        System.out.println("Connected to the database.");
     }
 
     public void disconnect() throws SQLException {

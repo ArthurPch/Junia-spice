@@ -43,9 +43,11 @@ public class OrderGenerator {
 
         process(product, quantity);
 
-        return machineOrders.entrySet().stream()
-                .map(entry -> new MachineOrderDTO(entry.getKey(), entry.getValue()))
-                .toList();
+        List<MachineOrderDTO> result = new ArrayList<>();
+        for (Map.Entry<Integer, List<OrderDTO>> entry : machineOrders.entrySet()) {
+            result.add(new MachineOrderDTO(entry.getKey(), entry.getValue()));
+        }
+        return result;
     }
 
     private void process(Product product, double quantity) throws SQLException {
@@ -85,8 +87,9 @@ public class OrderGenerator {
             if (!machineOrders.containsKey(machineSelectionnee.getId())) {
                 machineOrders.put(machineSelectionnee.getId(), new ArrayList<>());
             }
+            double quantiteArrondie = Math.round(quantiteAvantOp * 10000.0) / 10000.0;
             machineOrders.get(machineSelectionnee.getId())
-                    .add(new OrderDTO(orderCounter++, product.getId(), quantiteAvantOp));
+                    .add(new OrderDTO(orderCounter++, product.getId(), quantiteArrondie));
         }
 
         for (RecipeLine line : recipe.getRecipeLines()) {
